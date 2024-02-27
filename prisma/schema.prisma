@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,48 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model Client {
+  id String @id @default(uuid())
+
+  name String
+
+  account Account[]
+}
+
+model Account {
+  id String @id @default(uuid())
+
+  IBAN   String
+  amount Int
+
+  card      Card?
+  movements Movements[]
+
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String
+}
+
+model Card {
+  id String @id @default(uuid())
+
+  type   String
+  limit  Int
+  credit Int
+  active Boolean
+  pin    String
+
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String  @unique
+}
+
+model Movements {
+  id String @id @default(uuid())
+
+  amount Int
+  type   String
+
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String
 }

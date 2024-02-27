@@ -1,7 +1,9 @@
 import express from "express";
+import cors from "cors";
+
+import "./utils/prisma";
 
 import routes from "./routes";
-import cors from "cors";
 
 class App {
   public app: express.Application;
