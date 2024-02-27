@@ -2,6 +2,8 @@ import { NextFunction, Request, Response, Router } from "express";
 
 import cardService from "../services/card";
 
+import { validateCard } from "../middlewares";
+
 export class CardRouter {
   public router: Router;
 
@@ -55,8 +57,10 @@ export class CardRouter {
   }
 
   public init() {
-    this.router.post("/withdraw", this.withdrawAmount);
-    this.router.post("/depositAmount", this.depositAmount);
+    this.router.post("/withdraw", validateCard(), this.withdrawAmount);
+    this.router.post("/depositAmount", validateCard(), this.depositAmount);
+    this.router.post("/activateCard", this.activateCard);
+    this.router.post("/pinCard", validateCard(), this.pinCard);
   }
 }
 

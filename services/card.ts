@@ -64,7 +64,7 @@ export class CardService {
 
   public async pinCard(id: string, pin: string) {
     await db.card.update({
-      where: { id, active: true },
+      where: { id },
       data: { pin: bcrypt.hashSync(pin, 10) },
     });
   }
