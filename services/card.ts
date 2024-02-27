@@ -1,5 +1,7 @@
 import { db } from "../utils/prisma";
 
+import bcrypt from "bcrypt";
+
 export class CardService {
   public async withdrawAmount(id: string, amount: number, bank: string) {
     const card = await db.card.findUnique({
@@ -50,6 +52,20 @@ export class CardService {
 
     await db.movements.create({
       data: { accountId: card!.accountId, amount, type: "deposit" },
+    });
+  }
+
+  public async activateCard(id: string) {
+    await db.card.update({
+      where: { id },
+      data: { active: true },
+    });
+  }
+
+  public async pinCard(id: string, pin: string) {
+    await db.card.update({
+      where: { id, active: true },
+      data: { pin: bcrypt.hashSync(pin, 10) },
     });
   }
 }
