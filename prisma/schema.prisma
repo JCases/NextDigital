@@ -11,6 +11,7 @@ model Client {
   id String @id @default(uuid())
 
   name String
+  bank String
 
   account Account[]
 }
@@ -18,7 +19,7 @@ model Client {
 model Account {
   id String @id @default(uuid())
 
-  IBAN   String
+  IBAN   String @unique
   amount Int
 
   card      Card?
